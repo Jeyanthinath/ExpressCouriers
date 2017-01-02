@@ -65,7 +65,7 @@ function estimate_parcel(){
             $.get( "/estimate/"+city+"/"+val+"/"+brittle+"/", function( data ) {
                 data=JSON.parse(data);
                 if(data.amount){
-                    $( ".result" ).append( "<li> Parcel "+(index+1)+":  &#8377; "+data.amount+"</li>" );
+                    $( ".result" ).append( "<li> Parcel "+(index+1)+":  &#8377; <span id='parcel"+(index+1)+"_upd'>"+data.amount+"</span></li>" );
                     total += data.amount;
                 }
                 else if ( data.error){
@@ -91,44 +91,25 @@ function estimate_parcel(){
 function submit_order(){
     let city=$('#city').val();
     
-    let wt1=$('#parcel1').val();
-    let wt2=$('#parcel2').val();
-    let wt3=$('#parcel3').val();
+    let wt1=$('#parcel1').val() || 0;
+    let wt2=$('#parcel2').val() || 0;
+    let wt3=$('#parcel3').val() || 0;
     
-    let bt1=$('#parcel1_b').prop('checked');
-    let bt2=$('#parcel2_b').prop('checked');
-    let bt3=$('#parcel3_b').prop('checked');
     
-    let bt=[bt1,bt2,bt3];
-    let wt=[wt1,wt2,wt3];
+    let wt=(Math.ceil(parseInt(wt1)/100)*100)+(Math.ceil(parseInt(wt2)/100)*100)+(Math.ceil(parseInt(wt3)/100)*100);
     console.log(wt)
     let flag=0;
-    let brittle;
         $( ".result" ).html('');
-        wt.forEach(function(val,index){
-            brittle=0;
-            
-            if(bt[index]){
-                brittle=1;
-            }
-            
-            $.get( "/submit_order/"+city+"/"+string(val)+"/"+string(brittle)+"/", function( data ) {
+        
+            $.get( "/submit_order/"+city+"/"+wt+"/", function( data ) {
                 data=JSON.parse(data);
-                if(data.amount){
-                    $( ".result" ).append( "<li> Parcel "+(index+1)+":  &#8377; "+data.amount+"</li>" );
-                }
-                else if ( data.error){
-                    $('.result').append( "<li> Parcel "+(index+1)+": Size Overlimit </li>" );
-                    flag=1;
+                if(data.success){
+                    console.log(data)
                 }
                 //alert( "Load was performed.with html"+data );
                 sleep(300);
                 
             });
-        });
-        wt.forEach(function(val,index){
-            console.log("I is is"+val+" and item is "+index);
-        });
         if(!flag)
          $('#place_order').show();
         

@@ -15,6 +15,17 @@ app.use('/static', express.static(__dirname+"/static/"));
 //calculator
 let calc=require("./lib/engine/calculator.js");
 
+
+var mysql      = require('mysql');
+var connection = mysql.createConnection({
+  host     : 'localhost',
+  user     : 'root',
+  password : '',
+  database : 'c9'
+});
+
+connection.connect();
+
 app.get('/', function (req, res) {
   logger.info('Hello world called');
   res.send('Hello World!');
@@ -26,10 +37,6 @@ app.get('/login',function(req,res){
 
 app.get('/home',function(req,res){
     res.render('home.pug');
-});
-
-app.get('/report',function(req,res){
-    res.render('report.pug')
 });
 
 app.get('/estimate/:loc/:weight/:brittle',function(req,res){
@@ -44,12 +51,6 @@ app.get('/estimate/:loc/:weight/:brittle',function(req,res){
     }
     
     let date=Date().slice(4,15);
-    
-    /*
-    calc.daily_limit(date,location,wt,function(){
-        
-    });
-    */
     
     let hour=new Date().getHours();
     calc.amount_calc(location,wt,hour,brit,function(status){
@@ -67,6 +68,21 @@ app.get('/estimate/:loc/:weight/:brittle',function(req,res){
     });
 });
 
+app.get('/submit_order/:city/:weight',function(req, res) {
+    let city=req.params.city;
+    let wt=parseInt(req.params.weight);
+    let batch=1;
+    let query='Update day_limit set weight=weight+"'+wt+'" where location="'+city+'" and Day="'+Date().slice(4,15)+'" and batch="'+batch+'"';
+    connection.query(query, function(err, rows, fields) {
+        if(err){
+            console.log(err);
+            res.json('{"success":"0"}');
+        }
+        res.json('{"success":"1"}');
+    });
+    
+
+});
 
 app.get('/avail/:city',function(req,res){
    res.json('{"avail":"100 gm or 1 parcel"}') ;
