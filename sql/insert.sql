@@ -1,0 +1,2 @@
+ insert into price_list (city,rate,hiked_rate) values ('Banglore',30,36) , ('Delhi',35,42) , ('Goa',40,48), ('JK',45,54), ('Chennai',50,60) , ('Punjab',55,66), ('Chandigadh',60,72),('Kolkata',65,78),('Hydrabad',70,84),('Gandhinagar',75,90);
+ 
