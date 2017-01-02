@@ -4,3 +4,6 @@ create table report (sno int not null,name varchar(40),p1 int,b1 varchar(1),t1 i
 alter table report add foreign key(sno) references price_list(sno);
 
 create table day_limit ( Day varchar(20),batch int(1),location varchar(20),weight int(4), count int(2));
+
+create table batch ( ongoing int(1));
+insert into batch values (1);

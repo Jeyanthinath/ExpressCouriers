@@ -7,7 +7,7 @@ function startTime() {
     s = checkTime(s);
     document.getElementById('tim').innerHTML =
     h + ":" + m + ":" + s;
-    if(h+7 > 14 ) {
+    if(h > 14 ) {
         document.getElementById("extra").style.display = "block";
         document.getElementById('extra').innerHTML='<strong>Caution!</strong> Parcel Rates will be off 20% Extra cost'
     }
