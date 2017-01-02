@@ -36,7 +36,11 @@ app.get('/login',function(req,res){
 });
 
 app.get('/home',function(req,res){
-    res.render('home.pug');
+    connection.query('select ongoing from batch',function(err,rows,fields){
+        if(err)
+            res.render('home.pug')
+        res.render('home.pug',{'batch':rows[0].ongoing});
+    });
 });
 
 app.get('/estimate/:loc/:weight/:brittle',function(req,res){

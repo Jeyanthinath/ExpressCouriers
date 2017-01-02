@@ -22,6 +22,12 @@ html
       .row(style='padding-top:70px')
         .col-md-offset-3.col-md-6
           div(class="alert alert-warning" id='extra' role="alert" style='display:none') 
+          - if ( batch == 0 )
+            div(class="alert alert-warning" id='extra' role="alert" style='display:none') 
+              | No orders can be placed
+          - else if ( batch )
+            div(class="alert alert-warning" id='extra' role="alert") 
+              | Recieving orders for batch #{batch}
           .form-login
             h4 Enter the Details
             input.form-control.input-sm.chat-input(id='name',type='text', placeholder='username')
